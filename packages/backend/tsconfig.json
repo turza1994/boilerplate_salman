@@ -30,6 +30,7 @@
     "declaration": false,
     "declarationMap": false,
     "sourceMap": true,
+    "rootDir": "src",
     "outDir": "dist",
     "removeComments": false,
     "esModuleInterop": true,

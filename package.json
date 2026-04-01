@@ -1,7 +1,7 @@
 {
   "name": "boilerplate-fullstack",
   "version": "1.0.0",
-  "description": "Fullstack monoreboilerplate with Next.js frontend and Express.js backend",
+  "description": "Fullstack monoreboilerplate with React frontend and Express.js backend",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -33,7 +33,7 @@
   "keywords": [
     "fullstack",
     "monorepo",
-    "nextjs",
+    "react",
     "express",
     "typescript",
     "postgresql",

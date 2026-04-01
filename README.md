@@ -1,10 +1,10 @@
 # Boilerplate Fullstack
 
-Production-ready fullstack monorepo with Next.js 16 frontend and Express.js backend.
+Production-ready fullstack monorepo with React 19 frontend and Express.js backend.
 
 ## 🚀 Architecture
 
-- **Frontend**: Next.js 16 with TypeScript, Tailwind CSS, shadcn/ui
+- **Frontend**: React 19 with Vite, TypeScript, Tailwind CSS, shadcn/ui
 - **Backend**: Node.js Express with TypeScript, Drizzle ORM, PostgreSQL
 - **Authentication**: JWT with access/refresh tokens
 - **Database**: PostgreSQL with type-safe migrations
@@ -15,7 +15,7 @@ Production-ready fullstack monorepo with Next.js 16 frontend and Express.js back
 ```
 boilerplate_fullstack/
 ├── packages/
-│   ├── frontend/          # Next.js application (port 3000)
+│   ├── frontend/          # React application with Vite (port 3000)
 │   └── backend/           # Express API (port 5000)
 ├── scripts/               # Development and build scripts
 ├── docs/                  # Documentation
@@ -134,7 +134,7 @@ Configure the following for production:
 
 ## 📚 Package Documentation
 
-- [Frontend Guide](./docs/FRONTEND.md) - Next.js development patterns
+- [Frontend Guide](./docs/FRONTEND.md) - React development patterns
 - [Backend Guide](./docs/API.md) - Express.js API patterns
 - [Deployment Guide](./docs/DEPLOYMENT.md) - Production deployment
 
