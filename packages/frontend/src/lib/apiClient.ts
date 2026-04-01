@@ -6,6 +6,14 @@ import {
   SignupRequest,
   SignupResponse,
 } from '@/types/api'
+import {
+  Post,
+  FeedResponse,
+  Comment,
+  Liker,
+  CreatePostData,
+  CreateCommentData,
+} from '@/types/post'
 import { getAccessToken, setAccessToken } from './auth'
 import { addCSRFToHeaders, extractCSRFFromResponse } from './csrf'
 
@@ -30,13 +38,11 @@ class ApiClient {
       ...(options.headers as Record<string, string>),
     }
 
-    // Add Authorization header if access token exists
     const accessToken = getAccessToken()
     if (accessToken) {
       headers['Authorization'] = `Bearer ${accessToken}`
     }
 
-    // Add CSRF token for state-changing operations (POST, PUT, DELETE, PATCH)
     if (
       options.method &&
       ['POST', 'PUT', 'DELETE', 'PATCH'].includes(options.method.toUpperCase())
@@ -44,7 +50,6 @@ class ApiClient {
       addCSRFToHeaders(headers)
     }
 
-    // Include credentials for refresh token cookies
     const config: RequestInit = {
       ...options,
       headers,
@@ -55,14 +60,58 @@ class ApiClient {
       const response = await fetch(url, config)
       const data: ApiResponse<T> = await response.json()
 
-      // Extract CSRF token from response headers if present
       extractCSRFFromResponse(response)
 
-      // Handle 401 Unauthorized - attempt token refresh
       if (response.status === 401 && !endpoint.includes('/refresh-token')) {
         const refreshed = await this.refreshAccessToken()
         if (refreshed) {
-          // Retry the original request with new token
+          const newAccessToken = getAccessToken()
+          if (newAccessToken) {
+            headers['Authorization'] = `Bearer ${newAccessToken}`
+            const retryResponse = await fetch(url, { ...config, headers })
+            return retryResponse.json()
+          }
+        }
+      }
+
+      return data
+    } catch (error) {
+      console.error('API request failed:', error)
+      throw error
+    }
+  }
+
+  private async requestWithFile<T>(
+    endpoint: string,
+    formData: FormData,
+  ): Promise<ApiResponse<T>> {
+    const url = `${this.baseURL}${endpoint}`
+
+    const headers: Record<string, string> = {}
+
+    const accessToken = getAccessToken()
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`
+    }
+
+    addCSRFToHeaders(headers)
+
+    const config: RequestInit = {
+      method: 'POST',
+      headers,
+      body: formData,
+      credentials: 'include',
+    }
+
+    try {
+      const response = await fetch(url, config)
+      const data: ApiResponse<T> = await response.json()
+
+      extractCSRFFromResponse(response)
+
+      if (response.status === 401) {
+        const refreshed = await this.refreshAccessToken()
+        if (refreshed) {
           const newAccessToken = getAccessToken()
           if (newAccessToken) {
             headers['Authorization'] = `Bearer ${newAccessToken}`
@@ -81,26 +130,22 @@ class ApiClient {
 
   async refreshAccessToken(): Promise<boolean> {
     try {
-      // Use empty headers object to be enhanced with CSRF token
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
       }
 
-      // Add CSRF token to headers
       addCSRFToHeaders(headers)
 
       const response = await fetch(`${this.baseURL}/api/auth/refresh-token`, {
         method: 'POST',
         headers,
         credentials: 'include',
-        // No body needed - refresh token is in HttpOnly cookie
       })
 
       if (response.ok) {
         const data: ApiResponse<RefreshTokenResponse> = await response.json()
         if (data.success && data.data?.accessToken) {
           setAccessToken(data.data.accessToken)
-          // Extract CSRF token if present in response
           extractCSRFFromResponse(response)
           return true
         }
@@ -111,7 +156,6 @@ class ApiClient {
     return false
   }
 
-  // Authentication endpoints
   async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
     return this.request('/api/auth/login', {
       method: 'POST',
@@ -126,12 +170,76 @@ class ApiClient {
     })
   }
 
-  // Generic GET request
+  // Post endpoints
+  async getFeed(cursor?: number | null, limit = 10): Promise<ApiResponse<FeedResponse>> {
+    const params = new URLSearchParams()
+    if (cursor) params.set('cursor', String(cursor))
+    params.set('limit', String(limit))
+    return this.get<FeedResponse>(`/api/posts?${params.toString()}`)
+  }
+
+  async createPost(data: CreatePostData): Promise<ApiResponse<Post>> {
+    return this.post<Post>('/api/posts', data)
+  }
+
+  async getPost(id: number): Promise<ApiResponse<Post>> {
+    return this.get<Post>(`/api/posts/${id}`)
+  }
+
+  async updatePost(id: number, data: Partial<CreatePostData>): Promise<ApiResponse<Post>> {
+    return this.put<Post>(`/api/posts/${id}`, data)
+  }
+
+  async deletePost(id: number): Promise<ApiResponse<{ message: string }>> {
+    return this.delete(`/api/posts/${id}`)
+  }
+
+  // Comment endpoints
+  async getComments(postId: number): Promise<ApiResponse<Comment[]>> {
+    return this.get<Comment[]>(`/api/posts/${postId}/comments`)
+  }
+
+  async createComment(postId: number, data: CreateCommentData): Promise<ApiResponse<Comment>> {
+    return this.post<Comment>(`/api/posts/${postId}/comments`, data)
+  }
+
+  async deleteComment(id: number): Promise<ApiResponse<{ message: string }>> {
+    return this.delete(`/api/comments/${id}`)
+  }
+
+  async replyToComment(commentId: number, data: { content: string }): Promise<ApiResponse<Comment>> {
+    return this.post<Comment>(`/api/comments/${commentId}/reply`, data)
+  }
+
+  // Like endpoints
+  async togglePostLike(postId: number): Promise<ApiResponse<{ liked: boolean }>> {
+    return this.post<{ liked: boolean }>(`/api/posts/${postId}/like`, {})
+  }
+
+  async toggleCommentLike(commentId: number): Promise<ApiResponse<{ liked: boolean }>> {
+    return this.post<{ liked: boolean }>(`/api/comments/${commentId}/like`, {})
+  }
+
+  async getPostLikers(postId: number): Promise<ApiResponse<Liker[]>> {
+    return this.get<Liker[]>(`/api/posts/${postId}/likes`)
+  }
+
+  async getCommentLikers(commentId: number): Promise<ApiResponse<Liker[]>> {
+    return this.get<Liker[]>(`/api/comments/${commentId}/likes`)
+  }
+
+  // Upload endpoint
+  async uploadImage(file: File): Promise<ApiResponse<{ url: string }>> {
+    const formData = new FormData()
+    formData.append('image', file)
+    return this.requestWithFile<{ url: string }>('/api/upload', formData)
+  }
+
+  // Generic methods
   async get<T>(endpoint: string): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { method: 'GET' })
   }
 
-  // Generic POST request
   async post<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'POST',
@@ -139,7 +247,6 @@ class ApiClient {
     })
   }
 
-  // Generic PUT request
   async put<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'PUT',
@@ -147,7 +254,6 @@ class ApiClient {
     })
   }
 
-  // Generic DELETE request
   async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, { method: 'DELETE' })
   }

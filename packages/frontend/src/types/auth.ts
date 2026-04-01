@@ -12,6 +12,10 @@ export interface AuthContextType extends AuthState {
 }
 
 export type User = {
-  id: string
+  id: number
+  firstName: string
+  lastName: string
   email: string
+  role: string
+  createdAt: string
 }

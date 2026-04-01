@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { rateLimitMiddleware } from './middlewares/rateLimit.js';
 import { env } from './config/index.js';
@@ -9,7 +10,6 @@ import routes from './routes/index.js';
 
 const app = express();
 
-// Environment-based CORS configuration
 const corsOptions = {
   origin:
     env.NODE_ENV === 'production'
@@ -31,6 +31,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(rateLimitMiddleware);
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/api', routes);
 

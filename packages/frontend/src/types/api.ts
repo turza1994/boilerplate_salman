@@ -10,14 +10,17 @@ export interface LoginRequest {
 }
 
 export interface SignupRequest {
+  firstName: string
+  lastName: string
   email: string
   password: string
-  name: string
 }
 
 export interface LoginResponse {
   user: {
-    id: string
+    id: number
+    firstName: string
+    lastName: string
     email: string
     role: string
     createdAt: string
@@ -27,7 +30,9 @@ export interface LoginResponse {
 
 export interface SignupResponse {
   user: {
-    id: string
+    id: number
+    firstName: string
+    lastName: string
     email: string
     role: string
     createdAt: string
@@ -36,7 +41,7 @@ export interface SignupResponse {
 }
 
 export interface RefreshTokenRequest {
-  refreshToken?: string // Optional since backend uses HttpOnly cookies
+  refreshToken?: string
 }
 
 export interface RefreshTokenResponse {
@@ -44,15 +49,12 @@ export interface RefreshTokenResponse {
 }
 
 export interface User {
-  id: string
+  id: number
+  firstName: string
+  lastName: string
   email: string
   role: string
   createdAt: string
-}
-
-export interface SampleItem {
-  id: number
-  counter: number
 }
 
 export interface ApiError {

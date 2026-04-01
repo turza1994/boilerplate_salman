@@ -67,15 +67,27 @@ export function SignupForm() {
 
         <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
           <div className='space-y-4'>
-            <Input
-              {...register('name')}
-              type='text'
-              label='Full name'
-              placeholder='Enter your full name'
-              error={errors.name?.message}
-              autoComplete='name'
-              className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
-            />
+            <div className='grid grid-cols-2 gap-4'>
+              <Input
+                {...register('firstName')}
+                type='text'
+                label='First name'
+                placeholder='First name'
+                error={errors.firstName?.message}
+                autoComplete='given-name'
+                className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
+              />
+
+              <Input
+                {...register('lastName')}
+                type='text'
+                label='Last name'
+                placeholder='Last name'
+                error={errors.lastName?.message}
+                autoComplete='family-name'
+                className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
+              />
+            </div>
 
             <Input
               {...register('email')}

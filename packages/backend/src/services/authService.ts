@@ -12,14 +12,19 @@ import {
   type JwtPayload,
 } from '../utils/jwt.js';
 
-export async function signup(email: string, password: string) {
+export async function signup(
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string
+) {
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
     throw new Error('Email already exists');
   }
 
   const passwordHash = await hashPassword(password);
-  const user = await createUser(email, passwordHash);
+  const user = await createUser(email, passwordHash, firstName, lastName);
 
   if (!user) {
     throw new Error('Failed to create user');
@@ -40,6 +45,8 @@ export async function signup(email: string, password: string) {
   return {
     user: {
       id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,
@@ -75,6 +82,8 @@ export async function login(email: string, password: string) {
   return {
     user: {
       id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       role: user.role,
       createdAt: user.createdAt,

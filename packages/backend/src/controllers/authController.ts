@@ -11,9 +11,9 @@ import { logger } from '../utils/logger.js';
 
 export const signupController = asyncHandler(
   async (req: Request, res: Response) => {
-    const { email, password }: SignupInput = req.body;
+    const { email, password, firstName, lastName }: SignupInput = req.body;
 
-    const result = await signup(email, password);
+    const result = await signup(email, password, firstName, lastName);
 
     setRefreshTokenCookie(res, result.refreshToken);
 

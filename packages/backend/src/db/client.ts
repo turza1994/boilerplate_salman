@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { config } from 'dotenv';
+import { schema } from '../models/index.js';
 
 config({ path: '.env' });
 
@@ -10,4 +11,4 @@ if (!connectionString) {
 }
 
 const client = postgres(connectionString);
-export const db = drizzle(client);
+export const db = drizzle(client, { schema });

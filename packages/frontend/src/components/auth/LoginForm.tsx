@@ -34,7 +34,7 @@ export function LoginForm() {
 
     try {
       await login(data.email, data.password)
-      navigate('/dashboard')
+      navigate('/feed')
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : 'Login failed')
     } finally {

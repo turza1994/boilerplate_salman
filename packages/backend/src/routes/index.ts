@@ -1,13 +1,19 @@
 import { Router } from 'express';
 import authRoutes from './authRoutes.js';
 import refreshRoutes from './refreshRoutes.js';
-import sampleRoutes from './sampleRoutes.js';
+import postRoutes from './postRoutes.js';
+import commentRoutes from './commentRoutes.js';
+import likeRoutes from './likeRoutes.js';
+import uploadRoutes from './uploadRoutes.js';
 
 const router = Router();
 
 router.use('/auth', authRoutes);
 router.use('/auth', refreshRoutes);
-router.use('/sample', sampleRoutes);
+router.use('/posts', postRoutes);
+router.use('/', commentRoutes);
+router.use('/', likeRoutes);
+router.use('/upload', uploadRoutes);
 
 router.get('/health', (req, res) => {
   res.json({

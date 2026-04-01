@@ -18,12 +18,19 @@ export async function findUserById(id: number) {
   return result[0] ?? null;
 }
 
-export async function createUser(email: string, passwordHash: string) {
+export async function createUser(
+  email: string,
+  passwordHash: string,
+  firstName: string,
+  lastName: string
+) {
   const result = await db
     .insert(users)
     .values({
       email,
       passwordHash,
+      firstName,
+      lastName,
       role: 'user',
     })
     .returning();
@@ -32,23 +39,6 @@ export async function createUser(email: string, passwordHash: string) {
 }
 
 export async function updateUserRefreshToken(
-  userId: number,
-  refreshTokenHash: string | null
-) {
-  const result = await db
-    .update(users)
-    .set({ refreshTokenHash })
-    .where(eq(users.id, userId))
-    .returning();
-
-  if (result.length === 0) {
-    throw new Error('User not found');
-  }
-
-  return result[0];
-}
-
-export async function updateUserRefreshTokenForLock(
   userId: number,
   refreshTokenHash: string | null
 ) {

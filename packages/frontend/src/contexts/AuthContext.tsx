@@ -22,12 +22,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const accessToken = getAccessToken()
 
         if (accessToken) {
-          // Verify token is still valid by making a request
           try {
             const response = await apiClient.get('/api/health')
             if (response.success) {
+              // Try to restore user from localStorage
+              const storedUser = localStorage.getItem('user')
+              const user = storedUser ? JSON.parse(storedUser) : null
               setState((prev) => ({
                 ...prev,
+                user,
                 accessToken,
                 isAuthenticated: true,
                 isLoading: false,
@@ -35,14 +38,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               return
             }
           } catch {
-            // Token is invalid, try to refresh using apiClient
             try {
               const refreshed = await apiClient.refreshAccessToken()
               if (refreshed) {
                 const newAccessToken = getAccessToken()
                 if (newAccessToken) {
+                  const storedUser = localStorage.getItem('user')
+                  const user = storedUser ? JSON.parse(storedUser) : null
                   setState((prev) => ({
                     ...prev,
+                    user,
                     accessToken: newAccessToken,
                     isAuthenticated: true,
                     isLoading: false,
@@ -50,20 +55,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                   return
                 }
               }
-            } catch (refreshError) {
-              console.error('Token refresh failed:', refreshError)
+            } catch {
+              // Refresh failed
             }
           }
         }
 
-        // No valid tokens found
         clearAllTokens()
+        localStorage.removeItem('user')
         setState((prev) => ({
           ...prev,
           isLoading: false,
         }))
-      } catch (error) {
-        console.error('Auth check failed:', error)
+      } catch {
         setState((prev) => ({
           ...prev,
           isLoading: false,
@@ -83,10 +87,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (response.success && response.data) {
         const { user, accessToken } = response.data
 
-        // Store access token
         setAccessToken(accessToken)
-
-        // Note: Refresh token is set by server as HttpOnly cookie
+        localStorage.setItem('user', JSON.stringify(user))
 
         setState({
           user,
@@ -105,6 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = (): void => {
     clearAllTokens()
+    localStorage.removeItem('user')
     setState({
       user: null,
       accessToken: null,
@@ -130,7 +133,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Token refresh failed')
       }
     } catch (error) {
-      logout() // Clear invalid tokens
+      logout()
       throw error
     }
   }
