@@ -60,3 +60,4 @@ temp/
 # ai agent
 .agent/
 .cursor/
+uploads/

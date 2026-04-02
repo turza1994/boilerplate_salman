@@ -46,6 +46,7 @@ export interface Liker {
 export interface CreatePostData {
   content: string
   visibility: 'public' | 'private'
+  imageUrl?: string | null
 }
 
 export interface CreateCommentData {

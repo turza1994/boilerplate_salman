@@ -15,9 +15,9 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
   const { user } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(post.content)
-  const [editVisibility, setEditVisibility] = useState<
-    'public' | 'private'
-  >(post.visibility)
+  const [editVisibility, setEditVisibility] = useState<'public' | 'private'>(
+    post.visibility,
+  )
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post.likeCount)
   const [showLikers, setShowLikers] = useState(false)
@@ -77,10 +77,10 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
 
   return (
-    <div className='bg-white rounded-lg border border-slate-200 p-4 mb-4'>
+    <div className='p-4 mb-4 bg-white border rounded-lg border-slate-200'>
       <div className='flex items-start justify-between mb-3'>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium'>
+          <div className='flex items-center justify-center w-10 h-10 font-medium text-blue-600 bg-blue-100 rounded-full'>
             {post.author.firstName[0]}
             {post.author.lastName[0]}
           </div>
@@ -109,7 +109,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
           <div className='relative'>
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className='text-slate-400 hover:text-slate-600 cursor-pointer p-1'
+              className='p-1 cursor-pointer text-slate-400 hover:text-slate-600'
             >
               <svg
                 className='w-5 h-5'
@@ -126,13 +126,13 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
               </svg>
             </button>
             {showMenu && (
-              <div className='absolute right-0 top-8 bg-white border border-slate-200 rounded-lg shadow-lg py-1 w-32 z-10'>
+              <div className='absolute right-0 z-10 w-32 py-1 bg-white border rounded-lg shadow-lg top-8 border-slate-200'>
                 <button
                   onClick={() => {
                     setIsEditing(true)
                     setShowMenu(false)
                   }}
-                  className='w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 cursor-pointer'
+                  className='w-full px-4 py-2 text-sm text-left cursor-pointer text-slate-700 hover:bg-slate-100'
                 >
                   Edit
                 </button>
@@ -142,7 +142,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
                     handleDelete()
                   }}
                   disabled={isDeleting}
-                  className='w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer disabled:opacity-50'
+                  className='w-full px-4 py-2 text-sm text-left text-red-600 cursor-pointer hover:bg-red-50 disabled:opacity-50'
                 >
                   {isDeleting ? 'Deleting...' : 'Delete'}
                 </button>
@@ -157,7 +157,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
           <textarea
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
-            className='w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='w-full px-3 py-2 text-sm border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
             rows={3}
           />
           <div className='flex items-center gap-2 mt-2'>
@@ -166,14 +166,14 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
               onChange={(e) =>
                 setEditVisibility(e.target.value as 'public' | 'private')
               }
-              className='text-sm border border-slate-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='px-2 py-1 text-sm border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
             >
               <option value='public'>Public</option>
               <option value='private'>Private</option>
             </select>
             <button
               onClick={handleEdit}
-              className='text-sm text-blue-600 hover:text-blue-700 font-medium cursor-pointer'
+              className='text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700'
             >
               Save
             </button>
@@ -183,14 +183,16 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
                 setEditContent(post.content)
                 setEditVisibility(post.visibility)
               }}
-              className='text-sm text-slate-500 hover:text-slate-700 cursor-pointer'
+              className='text-sm cursor-pointer text-slate-500 hover:text-slate-700'
             >
               Cancel
             </button>
           </div>
         </div>
       ) : (
-        <p className='text-slate-800 mb-3 whitespace-pre-wrap'>{post.content}</p>
+        <p className='mb-3 whitespace-pre-wrap text-slate-800'>
+          {post.content}
+        </p>
       )}
 
       {post.imageUrl && (
@@ -198,7 +200,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
           <img
             src={`${API_BASE_URL}${post.imageUrl}`}
             alt='Post image'
-            className='w-full max-h-96 object-cover rounded-lg'
+            className='object-cover w-full rounded-lg max-h-96'
             loading='lazy'
           />
         </div>

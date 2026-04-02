@@ -57,9 +57,8 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
       const response = await apiClient.createPost({
         content,
         visibility,
+        imageUrl,
       })
-
-      void imageUrl
 
       if (response.success) {
         setContent('')
@@ -81,7 +80,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
   }
 
   return (
-    <div className='bg-white rounded-lg border border-slate-200 p-4 mb-4'>
+    <div className='p-4 mb-4 bg-white border rounded-lg border-slate-200'>
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -95,11 +94,11 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
           <img
             src={imagePreview}
             alt='Preview'
-            className='w-full max-h-64 object-cover rounded-lg'
+            className='object-cover w-full rounded-lg max-h-64'
           />
           <button
             onClick={removeImage}
-            className='absolute top-2 right-2 bg-black/50 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer hover:bg-black/70'
+            className='absolute flex items-center justify-center w-6 h-6 text-white rounded-full cursor-pointer top-2 right-2 bg-black/50 hover:bg-black/70'
           >
             <svg
               className='w-4 h-4'
@@ -119,7 +118,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
       )}
 
       {error && (
-        <div className='mb-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2'>
+        <div className='px-3 py-2 mb-3 text-sm text-red-600 border border-red-200 rounded-md bg-red-50'>
           {error}
         </div>
       )}
@@ -136,7 +135,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
           />
           <label
             htmlFor='image-upload'
-            className='flex items-center gap-1 text-sm text-slate-600 hover:text-slate-800 cursor-pointer'
+            className='flex items-center gap-1 text-sm cursor-pointer text-slate-600 hover:text-slate-800'
           >
             <svg
               className='w-5 h-5'
@@ -159,7 +158,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
             onChange={(e) =>
               setVisibility(e.target.value as 'public' | 'private')
             }
-            className='text-sm border border-slate-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500'
+            className='px-2 py-1 text-sm border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
           >
             <option value='public'>Public</option>
             <option value='private'>Private</option>

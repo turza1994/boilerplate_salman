@@ -6,13 +6,14 @@ import { CreatePostInput, UpdatePostInput } from '../schemas/post.js';
 export const createPostController = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = req.user!.userId;
-    const { content, visibility }: CreatePostInput = req.body;
-    const file = req as Request & { file?: { filename: string } };
-    const imageUrl = file.file?.filename
-      ? `/uploads/${file.file.filename}`
-      : null;
+    const { content, visibility, imageUrl }: CreatePostInput = req.body;
 
-    const post = await postService.createPost(userId, content, imageUrl, visibility);
+    const post = await postService.createPost(
+      userId,
+      content,
+      imageUrl ?? null,
+      visibility
+    );
 
     res.status(201).json({
       success: true,

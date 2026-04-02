@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const createPostSchema = z.object({
   content: z.string().min(1),
   visibility: z.enum(['public', 'private']).default('public'),
+  imageUrl: z.string().nullable().optional(),
 });
 
 export const updatePostSchema = z.object({
