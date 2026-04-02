@@ -10,18 +10,28 @@ import routes from './routes/index.js';
 
 const app = express();
 
+const corsOrigins =
+  env.NODE_ENV === 'production'
+    ? env.CORS_ORIGINS.length > 0
+      ? env.CORS_ORIGINS
+      : ['https://yourdomain.com', 'https://www.yourdomain.com']
+    : env.CORS_ORIGINS.length > 0
+      ? env.CORS_ORIGINS
+      : [
+          'http://localhost:3000',
+          'http://localhost:5173',
+          'http://localhost:8080',
+          'http://localhost:3001',
+        ];
+
 const corsOptions = {
-  origin:
-    env.NODE_ENV === 'production'
-      ? ['https://yourdomain.com', 'https://www.yourdomain.com']
-      : env.CORS_ORIGINS.length > 0
-        ? env.CORS_ORIGINS
-        : [
-            'http://localhost:3000',
-            'http://localhost:5173',
-            'http://localhost:8080',
-            'http://localhost:3001',
-          ],
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin || corsOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };
