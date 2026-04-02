@@ -14,8 +14,12 @@ import {
   CreatePostData,
   CreateCommentData,
 } from '@/types/post'
-import { getAccessToken, setAccessToken } from './auth'
-import { addCSRFToHeaders, extractCSRFFromResponse } from './csrf'
+import { getAccessToken, setAccessToken, clearAllTokens } from './auth'
+import {
+  addCSRFToHeaders,
+  extractCSRFFromResponse,
+  removeCSRFToken,
+} from './csrf'
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'
@@ -150,10 +154,28 @@ class ApiClient {
           return true
         }
       }
+
+      // Refresh failed - trigger logout
+      console.warn('Token refresh failed, logging out user')
+      this.handleLogout()
     } catch (error) {
       console.error('Token refresh failed:', error)
+      // Network error - trigger logout
+      this.handleLogout()
     }
     return false
+  }
+
+  /**
+   * Handle logout when refresh token fails
+   * Clears all tokens and redirects to login page
+   */
+  private handleLogout(): void {
+    clearAllTokens()
+    removeCSRFToken()
+    localStorage.removeItem('user')
+    // Redirect to login page
+    window.location.href = '/login'
   }
 
   async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
@@ -171,7 +193,10 @@ class ApiClient {
   }
 
   // Post endpoints
-  async getFeed(cursor?: number | null, limit = 10): Promise<ApiResponse<FeedResponse>> {
+  async getFeed(
+    cursor?: number | null,
+    limit = 10,
+  ): Promise<ApiResponse<FeedResponse>> {
     const params = new URLSearchParams()
     if (cursor) params.set('cursor', String(cursor))
     params.set('limit', String(limit))
@@ -186,7 +211,10 @@ class ApiClient {
     return this.get<Post>(`/api/posts/${id}`)
   }
 
-  async updatePost(id: number, data: Partial<CreatePostData>): Promise<ApiResponse<Post>> {
+  async updatePost(
+    id: number,
+    data: Partial<CreatePostData>,
+  ): Promise<ApiResponse<Post>> {
     return this.put<Post>(`/api/posts/${id}`, data)
   }
 
@@ -199,7 +227,10 @@ class ApiClient {
     return this.get<Comment[]>(`/api/posts/${postId}/comments`)
   }
 
-  async createComment(postId: number, data: CreateCommentData): Promise<ApiResponse<Comment>> {
+  async createComment(
+    postId: number,
+    data: CreateCommentData,
+  ): Promise<ApiResponse<Comment>> {
     return this.post<Comment>(`/api/posts/${postId}/comments`, data)
   }
 
@@ -207,16 +238,23 @@ class ApiClient {
     return this.delete(`/api/comments/${id}`)
   }
 
-  async replyToComment(commentId: number, data: { content: string }): Promise<ApiResponse<Comment>> {
+  async replyToComment(
+    commentId: number,
+    data: { content: string },
+  ): Promise<ApiResponse<Comment>> {
     return this.post<Comment>(`/api/comments/${commentId}/reply`, data)
   }
 
   // Like endpoints
-  async togglePostLike(postId: number): Promise<ApiResponse<{ liked: boolean }>> {
+  async togglePostLike(
+    postId: number,
+  ): Promise<ApiResponse<{ liked: boolean }>> {
     return this.post<{ liked: boolean }>(`/api/posts/${postId}/like`, {})
   }
 
-  async toggleCommentLike(commentId: number): Promise<ApiResponse<{ liked: boolean }>> {
+  async toggleCommentLike(
+    commentId: number,
+  ): Promise<ApiResponse<{ liked: boolean }>> {
     return this.post<{ liked: boolean }>(`/api/comments/${commentId}/like`, {})
   }
 

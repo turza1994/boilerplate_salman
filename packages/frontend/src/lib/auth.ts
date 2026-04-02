@@ -41,5 +41,8 @@ export const removeAccessToken = (): void => {
  */
 export const clearAllTokens = (): void => {
   removeAccessToken()
+  // Clear CSRF token cookie
+  document.cookie =
+    '_csrf=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=strict;'
   // Note: HttpOnly refresh cookie will be cleared by server on logout
 }
