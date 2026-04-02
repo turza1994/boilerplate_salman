@@ -114,6 +114,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       isAuthenticated: false,
       isLoading: false,
     })
+    // Explicit redirect to login page
+    window.location.href = '/login'
   }
 
   const refreshToken = async (): Promise<void> => {
