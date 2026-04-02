@@ -19,7 +19,12 @@ export async function createComment(
     }
   }
 
-  const comment = await createCommentRepo(postId, userId, content, parentId ?? null);
+  const comment = await createCommentRepo(
+    postId,
+    userId,
+    content,
+    parentId ?? null
+  );
 
   return {
     ...comment,
@@ -43,4 +48,29 @@ export async function deleteComment(id: number, userId: number) {
   }
 
   await deleteCommentRepo(id, userId);
+}
+
+export async function replyToComment(
+  parentId: number,
+  userId: number,
+  content: string
+) {
+  const parent = await getCommentById(parentId);
+  if (!parent) {
+    throw new Error('Parent comment not found');
+  }
+
+  const comment = await createCommentRepo(
+    parent.postId,
+    userId,
+    content,
+    parentId
+  );
+
+  return {
+    ...comment,
+    likeCount: 0,
+    isLiked: false,
+    replies: [],
+  };
 }

@@ -234,6 +234,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
       <CommentsSection
         postId={post.id}
         initialCommentCount={post.commentCount}
+        onUpdate={onUpdate}
       />
 
       {showLikers && (

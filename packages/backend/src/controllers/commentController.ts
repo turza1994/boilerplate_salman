@@ -57,11 +57,10 @@ export const replyToCommentController = asyncHandler(
     const parentId = Number(req.params.id);
     const { content }: { content: string } = req.body;
 
-    const comment = await commentService.createComment(
-      0,
+    const comment = await commentService.replyToComment(
+      parentId,
       userId,
-      content,
-      parentId
+      content
     );
 
     res.status(201).json({

@@ -7,11 +7,13 @@ import { LikeButton } from './LikeButton'
 interface CommentsSectionProps {
   postId: number
   initialCommentCount: number
+  onUpdate?: () => void
 }
 
 export function CommentsSection({
   postId,
   initialCommentCount,
+  onUpdate,
 }: CommentsSectionProps) {
   const { user } = useAuth()
   const [comments, setComments] = useState<Comment[]>([])
@@ -55,6 +57,7 @@ export function CommentsSection({
       if (response.success && response.data) {
         setComments((prev) => [response.data!, ...prev])
         setNewComment('')
+        onUpdate?.()
       }
     } catch {
       // ignore
@@ -80,6 +83,7 @@ export function CommentsSection({
         )
         setReplyContent('')
         setReplyTo(null)
+        onUpdate?.()
       }
     } catch {
       // ignore
@@ -97,10 +101,7 @@ export function CommentsSection({
     }
   }
 
-  const handleDeleteReply = async (
-    commentId: number,
-    replyId: number,
-  ) => {
+  const handleDeleteReply = async (commentId: number, replyId: number) => {
     try {
       await apiClient.deleteComment(replyId)
       setComments((prev) =>
@@ -150,10 +151,7 @@ export function CommentsSection({
     }
   }
 
-  const handleShowLikers = async (
-    type: 'comment' | 'reply',
-    id: number,
-  ) => {
+  const handleShowLikers = async (type: 'comment' | 'reply', id: number) => {
     setShowLikers({ type, id })
     try {
       const response = await apiClient.getCommentLikers(id)
@@ -179,11 +177,11 @@ export function CommentsSection({
   }
 
   return (
-    <div className='border-t border-slate-100 pt-3 mt-3'>
+    <div className='pt-3 mt-3 border-t border-slate-100'>
       {!isExpanded ? (
         <button
           onClick={() => setIsExpanded(true)}
-          className='text-sm text-blue-600 hover:text-blue-700 cursor-pointer'
+          className='text-sm text-blue-600 cursor-pointer hover:text-blue-700'
         >
           {initialCommentCount > 0
             ? `View ${initialCommentCount} comment${initialCommentCount !== 1 ? 's' : ''}`
@@ -197,7 +195,7 @@ export function CommentsSection({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder='Write a comment...'
-              className='flex-1 text-sm border border-slate-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex-1 px-3 py-2 text-sm border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
@@ -208,7 +206,7 @@ export function CommentsSection({
             <button
               onClick={handleAddComment}
               disabled={isLoading || !newComment.trim()}
-              className='text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50 cursor-pointer font-medium'
+              className='text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 disabled:opacity-50'
             >
               Post
             </button>
@@ -218,18 +216,20 @@ export function CommentsSection({
             {comments.map((comment) => (
               <div key={comment.id} className='space-y-2'>
                 <div className='flex gap-2'>
-                  <div className='w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-medium flex-shrink-0'>
+                  <div className='flex items-center justify-center flex-shrink-0 text-xs font-medium text-blue-600 bg-blue-100 rounded-full w-7 h-7'>
                     {comment.author.firstName[0]}
                     {comment.author.lastName[0]}
                   </div>
                   <div className='flex-1'>
-                    <div className='bg-slate-100 rounded-lg px-3 py-2'>
+                    <div className='px-3 py-2 rounded-lg bg-slate-100'>
                       <span className='text-sm font-medium text-slate-900'>
                         {comment.author.firstName} {comment.author.lastName}
                       </span>
-                      <p className='text-sm text-slate-700'>{comment.content}</p>
+                      <p className='text-sm text-slate-700'>
+                        {comment.content}
+                      </p>
                     </div>
-                    <div className='flex items-center gap-3 mt-1 px-1'>
+                    <div className='flex items-center gap-3 px-1 mt-1'>
                       <span className='text-xs text-slate-400'>
                         {formatTime(comment.createdAt)}
                       </span>
@@ -237,7 +237,7 @@ export function CommentsSection({
                         onClick={() =>
                           setReplyTo(replyTo === comment.id ? null : comment.id)
                         }
-                        className='text-xs text-slate-500 hover:text-slate-700 cursor-pointer font-medium'
+                        className='text-xs font-medium cursor-pointer text-slate-500 hover:text-slate-700'
                       >
                         Reply
                       </button>
@@ -252,7 +252,7 @@ export function CommentsSection({
                       {user?.id === comment.userId && (
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
-                          className='text-xs text-red-500 hover:text-red-700 cursor-pointer'
+                          className='text-xs text-red-500 cursor-pointer hover:text-red-700'
                         >
                           Delete
                         </button>
@@ -278,7 +278,7 @@ export function CommentsSection({
                         <button
                           onClick={() => handleReply(comment.id)}
                           disabled={isLoading || !replyContent.trim()}
-                          className='text-sm text-blue-600 hover:text-blue-700 disabled:opacity-50 cursor-pointer font-medium'
+                          className='text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 disabled:opacity-50'
                         >
                           Reply
                         </button>
@@ -286,15 +286,15 @@ export function CommentsSection({
                     )}
 
                     {comment.replies.length > 0 && (
-                      <div className='ml-4 mt-2 space-y-2'>
+                      <div className='mt-2 ml-4 space-y-2'>
                         {comment.replies.map((reply) => (
                           <div key={reply.id} className='flex gap-2'>
-                            <div className='w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 text-xs font-medium flex-shrink-0'>
+                            <div className='flex items-center justify-center flex-shrink-0 w-6 h-6 text-xs font-medium rounded-full bg-slate-200 text-slate-600'>
                               {reply.author.firstName[0]}
                               {reply.author.lastName[0]}
                             </div>
                             <div className='flex-1'>
-                              <div className='bg-slate-50 rounded-lg px-3 py-2'>
+                              <div className='px-3 py-2 rounded-lg bg-slate-50'>
                                 <span className='text-sm font-medium text-slate-900'>
                                   {reply.author.firstName}{' '}
                                   {reply.author.lastName}
@@ -303,7 +303,7 @@ export function CommentsSection({
                                   {reply.content}
                                 </p>
                               </div>
-                              <div className='flex items-center gap-3 mt-1 px-1'>
+                              <div className='flex items-center gap-3 px-1 mt-1'>
                                 <span className='text-xs text-slate-400'>
                                   {formatTime(reply.createdAt)}
                                 </span>
@@ -322,7 +322,7 @@ export function CommentsSection({
                                     onClick={() =>
                                       handleDeleteReply(comment.id, reply.id)
                                     }
-                                    className='text-xs text-red-500 hover:text-red-700 cursor-pointer'
+                                    className='text-xs text-red-500 cursor-pointer hover:text-red-700'
                                   >
                                     Delete
                                   </button>
@@ -341,7 +341,7 @@ export function CommentsSection({
 
           <button
             onClick={() => setIsExpanded(false)}
-            className='text-sm text-slate-400 hover:text-slate-600 cursor-pointer'
+            className='text-sm cursor-pointer text-slate-400 hover:text-slate-600'
           >
             Hide comments
           </button>
@@ -350,14 +350,14 @@ export function CommentsSection({
 
       {showLikers && (
         <div
-          className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'
+          className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
           onClick={() => {
             setShowLikers(null)
             setLikers([])
           }}
         >
           <div
-            className='bg-white rounded-lg shadow-xl w-full max-w-sm mx-4'
+            className='w-full max-w-sm mx-4 bg-white rounded-lg shadow-xl'
             onClick={(e) => e.stopPropagation()}
           >
             <div className='flex items-center justify-between p-4 border-b border-slate-200'>
@@ -367,7 +367,7 @@ export function CommentsSection({
                   setShowLikers(null)
                   setLikers([])
                 }}
-                className='text-slate-400 hover:text-slate-600 cursor-pointer'
+                className='cursor-pointer text-slate-400 hover:text-slate-600'
               >
                 <svg
                   className='w-5 h-5'
@@ -384,14 +384,14 @@ export function CommentsSection({
                 </svg>
               </button>
             </div>
-            <div className='max-h-80 overflow-y-auto p-4'>
+            <div className='p-4 overflow-y-auto max-h-80'>
               {likers.length === 0 ? (
-                <p className='text-slate-500 text-center py-4'>No likes yet</p>
+                <p className='py-4 text-center text-slate-500'>No likes yet</p>
               ) : (
                 <div className='space-y-3'>
                   {likers.map((liker) => (
                     <div key={liker.id} className='flex items-center gap-3'>
-                      <div className='w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-sm font-medium'>
+                      <div className='flex items-center justify-center w-8 h-8 text-sm font-medium text-blue-600 bg-blue-100 rounded-full'>
                         {liker.firstName[0]}
                         {liker.lastName[0]}
                       </div>
