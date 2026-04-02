@@ -20,8 +20,6 @@ export default function FeedPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isDarkMode, setIsDarkMode] = useState(false)
-
   const loadPosts = useCallback(
     async (reset = false) => {
       if (reset) {
@@ -75,10 +73,6 @@ export default function FeedPage() {
     if (!isLoadingMore && hasMore) {
       loadPosts(false)
     }
-  }
-
-  const handleThemeToggle = () => {
-    setIsDarkMode(!isDarkMode)
   }
 
   if (authLoading) {
@@ -146,9 +140,7 @@ export default function FeedPage() {
 
   return (
     <FeedLayout
-      header={
-        <FeedHeader onThemeToggle={handleThemeToggle} isDarkMode={isDarkMode} />
-      }
+      header={<FeedHeader />}
       leftSidebar={<LeftSidebar />}
       mainContent={mainContent}
       rightSidebar={<RightSidebar />}
