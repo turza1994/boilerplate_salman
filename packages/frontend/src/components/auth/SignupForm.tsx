@@ -2,12 +2,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signupSchema, SignupFormData } from '@/lib/validation'
 import { apiClient } from '@/lib/apiClient'
-import { useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import '@/styles/auth.css'
 
 export function SignupForm() {
   const navigate = useNavigate()
@@ -42,86 +39,156 @@ export function SignupForm() {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8'>
-      <div className='max-w-md w-full space-y-8'>
-        <div className='text-center'>
-          <h2 className='text-3xl font-bold text-slate-900 mb-2'>
-            Create your account
-          </h2>
-          <p className='text-sm text-slate-600'>
-            Or{' '}
-            <Link
-              to='/login'
-              className='font-medium text-blue-600 hover:text-blue-500 cursor-pointer transition-colors duration-200 motion-reduce:transition-none'
-            >
-              sign in to your existing account
-            </Link>
-          </p>
-        </div>
+    <section className='auth-wrapper'>
+      <div className='auth-shape auth-shape-one'>
+        <img
+          src='/assets/images/shape1.svg'
+          alt=''
+          className='auth-shape-img'
+        />
+        <img
+          src='/assets/images/dark_shape.svg'
+          alt=''
+          className='auth-shape-dark'
+        />
+      </div>
+      <div className='auth-shape auth-shape-two'>
+        <img
+          src='/assets/images/shape2.svg'
+          alt=''
+          className='auth-shape-img'
+        />
+        <img
+          src='/assets/images/dark_shape1.svg'
+          alt=''
+          className='auth-shape-dark'
+        />
+      </div>
+      <div className='auth-shape auth-shape-three'>
+        <img
+          src='/assets/images/shape3.svg'
+          alt=''
+          className='auth-shape-img'
+        />
+        <img
+          src='/assets/images/dark_shape2.svg'
+          alt=''
+          className='auth-shape-dark'
+        />
+      </div>
 
-        {submitError && (
-          <Alert className='bg-red-50 border-red-200 text-red-800'>
-            <AlertDescription>{submitError}</AlertDescription>
-          </Alert>
-        )}
-
-        <form className='mt-8 space-y-6' onSubmit={handleSubmit(onSubmit)}>
-          <div className='space-y-4'>
-            <div className='grid grid-cols-2 gap-4'>
-              <Input
-                {...register('firstName')}
-                type='text'
-                label='First name'
-                placeholder='First name'
-                error={errors.firstName?.message}
-                autoComplete='given-name'
-                className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
-              />
-
-              <Input
-                {...register('lastName')}
-                type='text'
-                label='Last name'
-                placeholder='Last name'
-                error={errors.lastName?.message}
-                autoComplete='family-name'
-                className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
+      <div className='max-w-[1200px] mx-auto px-4'>
+        <div className='flex items-center flex-wrap'>
+          <div className='hidden lg:block lg:w-2/3'>
+            <div className='text-center'>
+              <img
+                src='/assets/images/registration.png'
+                alt='Registration'
+                className='auth-hero-img mx-auto'
               />
             </div>
-
-            <Input
-              {...register('email')}
-              type='email'
-              label='Email address'
-              placeholder='Enter your email'
-              error={errors.email?.message}
-              autoComplete='email'
-              className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
-            />
-
-            <Input
-              {...register('password')}
-              type='password'
-              label='Password'
-              placeholder='Create a password'
-              error={errors.password?.message}
-              autoComplete='new-password'
-              className='h-10 px-3 focus-visible:ring-2 motion-reduce:transition-none'
-            />
           </div>
+          <div className='w-full lg:w-1/3'>
+            <div className='auth-card'>
+              <img
+                src='/assets/images/logo.svg'
+                alt='Logo'
+                className='auth-logo'
+              />
+              <p className='auth-card-para'>Get Started Now</p>
+              <h4 className='auth-card-title'>Registration</h4>
 
-          <div>
-            <Button
-              type='submit'
-              className='w-full bg-blue-600 hover:bg-blue-700 transition-colors duration-200 motion-reduce:transition-none'
-              isLoading={isLoading}
-              disabled={isLoading}
-            >
-              Create account
-            </Button>
+              <button type='button' className='auth-google-btn'>
+                <img
+                  src='/assets/images/google.svg'
+                  alt='Google'
+                  className='auth-google-btn-icon'
+                />
+                <span>Register with google</span>
+              </button>
+
+              <div className='auth-divider'>
+                <span>Or</span>
+              </div>
+
+              {submitError && (
+                <div className='auth-alert auth-alert-error'>
+                  {submitError}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className='auth-field'>
+                  <label htmlFor='signup-email'>Email</label>
+                  <input
+                    {...register('email')}
+                    id='signup-email'
+                    type='email'
+                    className='auth-input'
+                    autoComplete='email'
+                  />
+                  {errors.email && (
+                    <p className='auth-error'>{errors.email.message}</p>
+                  )}
+                </div>
+
+                <div className='auth-field'>
+                  <label htmlFor='signup-password'>Password</label>
+                  <input
+                    {...register('password')}
+                    id='signup-password'
+                    type='password'
+                    className='auth-input'
+                    autoComplete='new-password'
+                  />
+                  {errors.password && (
+                    <p className='auth-error'>{errors.password.message}</p>
+                  )}
+                </div>
+
+                <div className='auth-field'>
+                  <label htmlFor='signup-repeat-password'>
+                    Repeat Password
+                  </label>
+                  <input
+                    id='signup-repeat-password'
+                    type='password'
+                    className='auth-input'
+                    autoComplete='new-password'
+                  />
+                </div>
+
+                <div className='auth-row auth-form-check'>
+                  <label className='auth-radio-label'>
+                    <input
+                      type='radio'
+                      className='auth-radio'
+                      name='terms'
+                      defaultChecked
+                    />
+                    I agree to terms & conditions
+                  </label>
+                </div>
+
+                <div className='auth-submit-wrap'>
+                  <button
+                    type='submit'
+                    className='auth-submit-btn'
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Creating account...' : 'Sign Up'}
+                  </button>
+                </div>
+              </form>
+
+              <p className='auth-bottom-text'>
+                Already have an account?{' '}
+                <Link to='/login'>Login</Link>
+              </p>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

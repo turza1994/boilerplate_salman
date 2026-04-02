@@ -16,7 +16,7 @@ export function FeedLayout({
   mobileBottomNav,
 }: FeedLayoutProps) {
   return (
-    <div className='min-h-screen bg-slate-50'>
+    <div className='min-h-screen bg-[#F2F4F7]'>
       {header}
       <div className='container px-4 py-6 mx-auto'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>

@@ -8,25 +8,22 @@ export function RightSidebar() {
       id: 1,
       name: 'Steve Jobs',
       role: 'CEO of Apple',
-      initials: 'SJ',
-      color: 'blue',
+      image: '/assets/images/people1.png',
       online: false,
       lastSeen: '5 minute ago',
     },
     {
       id: 2,
       name: 'Ryan Roslansky',
-      role: 'CEO of LinkedIn',
-      initials: 'RR',
-      color: 'green',
+      role: 'CEO of Linkedin',
+      image: '/assets/images/people2.png',
       online: true,
     },
     {
       id: 3,
       name: 'Dylan Field',
       role: 'CEO of Figma',
-      initials: 'DF',
-      color: 'purple',
+      image: '/assets/images/people3.png',
       online: true,
     },
   ]
@@ -49,9 +46,7 @@ export function RightSidebar() {
         <hr className='mb-6 border-slate-200' />
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
-            <div className='flex items-center justify-center w-12 h-12 bg-orange-100 rounded-full'>
-              <span className='font-medium text-orange-600'>RS</span>
-            </div>
+            <img src='/assets/images/Avatar.png' alt='Radovan SkillArena' className='w-12 h-12 rounded-full object-cover' />
             <div>
               <h5 className='font-medium text-slate-900'>Radovan SkillArena</h5>
               <p className='text-sm text-slate-500'>Founder & CEO at Trophy</p>
@@ -78,21 +73,19 @@ export function RightSidebar() {
         </div>
         <div className='relative mb-6'>
           <svg
-            className='absolute w-5 h-5 -translate-y-1/2 left-3 top-1/2 text-slate-400'
+            className='absolute w-4 h-4 -translate-y-1/2 left-3 top-1/2 text-slate-400'
+            xmlns='http://www.w3.org/2000/svg'
+            width='17'
+            height='17'
             fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
+            viewBox='0 0 17 17'
           >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-            />
+            <circle cx='7' cy='7' r='6' stroke='#666' />
+            <path stroke='#666' strokeLinecap='round' d='M16 16l-3-3' />
           </svg>
           <input
             type='text'
-            placeholder='Search...'
+            placeholder='input search text'
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className='w-full py-2 pl-10 pr-4 text-sm border rounded-lg border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
@@ -103,18 +96,11 @@ export function RightSidebar() {
             <div key={friend.id} className='flex items-center justify-between'>
               <div className='flex items-center gap-3'>
                 <div className='relative'>
-                  <div
-                    className={`flex items-center justify-center w-10 h-10 rounded-full bg-${friend.color}-100`}
-                  >
-                    <span
-                      className={`text-sm font-medium text-${friend.color}-600`}
-                    >
-                      {friend.initials}
-                    </span>
-                  </div>
-                  {friend.online && (
-                    <span className='absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full'></span>
-                  )}
+                  <img
+                    src={friend.image}
+                    alt={friend.name}
+                    className='w-10 h-10 rounded-full object-cover'
+                  />
                 </div>
                 <div>
                   <h5 className='font-medium text-slate-900'>{friend.name}</h5>
@@ -122,16 +108,9 @@ export function RightSidebar() {
                 </div>
               </div>
               {friend.online ? (
-                <span className='flex items-center gap-1 text-xs text-green-600'>
-                  <svg
-                    className='w-3 h-3'
-                    fill='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <circle cx='12' cy='12' r='10' />
-                  </svg>
-                  Online
-                </span>
+                <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' viewBox='0 0 14 14'>
+                  <rect width='12' height='12' x='1' y='1' fill='#0ACF83' stroke='#fff' strokeWidth='2' rx='6' />
+                </svg>
               ) : (
                 <span className='text-xs text-slate-500'>
                   {friend.lastSeen}

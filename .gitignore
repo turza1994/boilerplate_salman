@@ -30,6 +30,9 @@ pids
 *.seed
 *.pid.lock
 
+uploads/
+
+
 # Coverage directory used by tools like istanbul
 coverage/
 packages/*/coverage/
@@ -60,7 +63,7 @@ temp/
 # ai agent
 .agent/
 .cursor/
-uploads/
+.kilo/
 
 # design inspiration
 design/

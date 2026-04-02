@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Post } from '@/types/post'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/apiClient'
-import { LikeButton } from './LikeButton'
 import { CommentsSection } from './CommentsSection'
 import { PostLikersModal } from './PostLikersModal'
 
@@ -81,10 +80,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
       {/* Post Header */}
       <div className='flex items-start justify-between p-6 pb-4'>
         <div className='flex items-center gap-3'>
-          <div className='flex items-center justify-center w-10 h-10 font-medium text-blue-600 bg-blue-100 rounded-full'>
-            {post.author.firstName[0]}
-            {post.author.lastName[0]}
-          </div>
+          <img src='/assets/images/post_img.png' alt='Author' className='w-10 h-10 rounded-full object-cover' />
           <div>
             <h3 className='font-semibold text-slate-900'>
               {post.author.firstName} {post.author.lastName}
@@ -93,7 +89,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
               <span className='text-sm text-slate-500'>
                 {formatTime(post.createdAt)}
               </span>
-              <span className='text-slate-400'>·</span>
+              <span className='text-slate-400'>.</span>
               <a href='#0' className='text-sm text-blue-600 hover:underline'>
                 {post.visibility}
               </a>
@@ -107,127 +103,58 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
               onClick={() => setShowMenu(!showMenu)}
               className='p-1 cursor-pointer text-slate-400 hover:text-slate-600'
             >
-              <svg
-                className='w-5 h-5'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z'
-                />
+              <svg xmlns='http://www.w3.org/2000/svg' width='4' height='17' fill='none' viewBox='0 0 4 17'>
+                <circle cx='2' cy='2' r='2' fill='#C4C4C4' />
+                <circle cx='2' cy='8' r='2' fill='#C4C4C4' />
+                <circle cx='2' cy='15' r='2' fill='#C4C4C4' />
               </svg>
             </button>
             {showMenu && (
               <div className='absolute right-0 z-10 w-48 py-1 bg-white border rounded-lg shadow-lg top-8 border-slate-200'>
                 <button
-                  onClick={() => {
-                    setShowMenu(false)
-                  }}
+                  onClick={() => setShowMenu(false)}
                   className='flex items-center w-full gap-3 px-4 py-2 text-sm text-left text-slate-700 hover:bg-slate-50'
                 >
-                  <svg
-                    className='w-4 h-4'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
-                    />
+                  <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 18 18'>
+                    <path stroke='#1890FF' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.2' d='M14.25 15.75L9 12l-5.25 3.75v-12a1.5 1.5 0 011.5-1.5h7.5a1.5 1.5 0 011.5 1.5v12z' />
                   </svg>
                   Save Post
                 </button>
                 <button
-                  onClick={() => {
-                    setShowMenu(false)
-                  }}
+                  onClick={() => setShowMenu(false)}
                   className='flex items-center w-full gap-3 px-4 py-2 text-sm text-left text-slate-700 hover:bg-slate-50'
                 >
-                  <svg
-                    className='w-4 h-4'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'
-                    />
+                  <svg xmlns='http://www.w3.org/2000/svg' width='20' height='22' fill='none' viewBox='0 0 20 22'>
+                    <path fill='#377DFF' fillRule='evenodd' d='M7.547 19.55c.533.59 1.218.915 1.93.915.714 0 1.403-.324 1.938-.916a.777.777 0 011.09-.056c.318.284.344.77.058 1.084-.832.917-1.927 1.423-3.086 1.423h-.002c-1.155-.001-2.248-.506-3.077-1.424a.762.762 0 01.057-1.083.774.774 0 011.092.057zM9.527 0c4.58 0 7.657 3.543 7.657 6.85 0 1.702.436 2.424.899 3.19.457.754.976 1.612.976 3.233-.36 4.14-4.713 4.478-9.531 4.478-4.818 0-9.172-.337-9.528-4.413-.003-1.686.515-2.544.973-3.299l.161-.27c.398-.679.737-1.417.737-2.918C1.871 3.543 4.948 0 9.528 0zm0 1.535c-3.6 0-6.11 2.802-6.11 5.316 0 2.127-.595 3.11-1.12 3.978-.422.697-.755 1.247-.755 2.444.173 1.93 1.455 2.944 7.986 2.944 6.494 0 7.817-1.06 7.988-3.01-.003-1.13-.336-1.681-.757-2.378-.526-.868-1.12-1.851-1.12-3.978 0-2.514-2.51-5.316-6.111-5.316z' clipRule='evenodd' />
                   </svg>
                   Turn On Notification
                 </button>
                 <button
-                  onClick={() => {
-                    setShowMenu(false)
-                  }}
+                  onClick={() => setShowMenu(false)}
                   className='flex items-center w-full gap-3 px-4 py-2 text-sm text-left text-slate-700 hover:bg-slate-50'
                 >
-                  <svg
-                    className='w-4 h-4'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21'
-                    />
+                  <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 18 18'>
+                    <path stroke='#1890FF' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.2' d='M14.25 2.25H3.75a1.5 1.5 0 00-1.5 1.5v10.5a1.5 1.5 0 001.5 1.5h10.5a1.5 1.5 0 001.5-1.5V3.75a1.5 1.5 0 00-1.5-1.5zM6.75 6.75l4.5 4.5M11.25 6.75l-4.5 4.5' />
                   </svg>
                   Hide
                 </button>
                 <button
-                  onClick={() => {
-                    setIsEditing(true)
-                    setShowMenu(false)
-                  }}
+                  onClick={() => { setIsEditing(true); setShowMenu(false) }}
                   className='flex items-center w-full gap-3 px-4 py-2 text-sm text-left text-slate-700 hover:bg-slate-50'
                 >
-                  <svg
-                    className='w-4 h-4'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-                    />
+                  <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 18 18'>
+                    <path stroke='#1890FF' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.2' d='M8.25 3H3a1.5 1.5 0 00-1.5 1.5V15A1.5 1.5 0 003 16.5h10.5A1.5 1.5 0 0015 15V9.75' />
+                    <path stroke='#1890FF' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.2' d='M13.875 1.875a1.591 1.591 0 112.25 2.25L9 11.25 6 12l.75-3 7.125-7.125z' />
                   </svg>
                   Edit Post
                 </button>
                 <button
-                  onClick={() => {
-                    setShowMenu(false)
-                    handleDelete()
-                  }}
+                  onClick={() => { setShowMenu(false); handleDelete() }}
                   disabled={isDeleting}
                   className='flex items-center w-full gap-3 px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50 disabled:opacity-50'
                 >
-                  <svg
-                    className='w-4 h-4'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth={2}
-                      d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-                    />
+                  <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' viewBox='0 0 18 18'>
+                    <path stroke='#1890FF' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.2' d='M2.25 4.5h13.5M6 4.5V3a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0112 3v1.5m2.25 0V15a1.5 1.5 0 01-1.5 1.5h-7.5a1.5 1.5 0 01-1.5-1.5V4.5h10.5zM7.5 8.25v4.5M10.5 8.25v4.5' />
                   </svg>
                   {isDeleting ? 'Deleting...' : 'Delete Post'}
                 </button>
@@ -299,15 +226,9 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
       <div className='flex items-center justify-between px-6 py-3 border-t border-slate-200'>
         <div className='flex items-center gap-2'>
           <div className='flex -space-x-1'>
-            <div className='flex items-center justify-center w-6 h-6 bg-yellow-400 rounded-full'>
-              <span className='text-xs'>👍</span>
-            </div>
-            <div className='flex items-center justify-center w-6 h-6 bg-red-400 rounded-full'>
-              <span className='text-xs'>❤️</span>
-            </div>
-            <div className='flex items-center justify-center w-6 h-6 bg-yellow-300 rounded-full'>
-              <span className='text-xs'>😂</span>
-            </div>
+            <img src='/assets/images/react_img1.png' alt='' className='w-6 h-6 rounded-full border-2 border-white' />
+            <img src='/assets/images/react_img2.png' alt='' className='w-6 h-6 rounded-full border-2 border-white' />
+            <img src='/assets/images/react_img3.png' alt='' className='w-6 h-6 rounded-full border-2 border-white' />
           </div>
           <span className='text-sm text-slate-600'>{likeCount}</span>
         </div>
@@ -319,41 +240,33 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
 
       {/* Post Actions */}
       <div className='flex items-center border-t border-slate-200'>
-        <LikeButton
-          isLiked={isLiked}
-          likeCount={likeCount}
-          onToggle={handleToggleLike}
-          onShowLikers={() => setShowLikers(true)}
-        />
+        {/* Haha / Like Button */}
+        <button
+          onClick={() => handleToggleLike(!isLiked)}
+          className='flex items-center justify-center flex-1 gap-2 py-3 text-sm text-slate-600 hover:bg-slate-50'
+        >
+          <svg xmlns='http://www.w3.org/2000/svg' width='19' height='19' fill='none' viewBox='0 0 19 19'>
+            <path fill='#FFCC4D' d='M9.5 19a9.5 9.5 0 100-19 9.5 9.5 0 000 19z' />
+            <path fill='#664500' d='M9.5 11.083c-1.912 0-3.181-.222-4.75-.527-.358-.07-1.056 0-1.056 1.055 0 2.111 2.425 4.75 5.806 4.75 3.38 0 5.805-2.639 5.805-4.75 0-1.055-.697-1.125-1.055-1.055-1.57.305-2.838.527-4.75.527z' />
+            <path fill='#fff' d='M4.75 11.611s1.583.528 4.75.528 4.75-.528 4.75-.528-1.056 2.111-4.75 2.111-4.75-2.11-4.75-2.11z' />
+            <path fill='#664500' d='M6.333 8.972c.729 0 1.32-.827 1.32-1.847s-.591-1.847-1.32-1.847c-.729 0-1.32.827-1.32 1.847s.591 1.847 1.32 1.847zM12.667 8.972c.729 0 1.32-.827 1.32-1.847s-.591-1.847-1.32-1.847c-.729 0-1.32.827-1.32 1.847s.591 1.847 1.32 1.847z' />
+          </svg>
+          Haha
+        </button>
+
+        {/* Comment Button */}
         <button className='flex items-center justify-center flex-1 gap-2 py-3 text-sm text-slate-600 hover:bg-slate-50'>
-          <svg
-            className='w-5 h-5'
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
-            />
+          <svg xmlns='http://www.w3.org/2000/svg' width='21' height='21' fill='none' viewBox='0 0 21 21'>
+            <path stroke='#000' d='M1 10.5c0-.464 0-.696.009-.893A9 9 0 019.607 1.01C9.804 1 10.036 1 10.5 1v0c.464 0 .696 0 .893.009a9 9 0 018.598 8.598c.009.197.009.429.009.893v6.046c0 1.36 0 2.041-.317 2.535a2 2 0 01-.602.602c-.494.317-1.174.317-2.535.317H10.5c-.464 0-.696 0-.893-.009a9 9 0 01-8.598-8.598C1 11.196 1 10.964 1 10.5v0z' />
+            <path stroke='#000' strokeLinecap='round' strokeLinejoin='round' d='M6.938 9.313h7.125M10.5 14.063h3.563' />
           </svg>
           Comment
         </button>
+
+        {/* Share Button */}
         <button className='flex items-center justify-center flex-1 gap-2 py-3 text-sm text-slate-600 hover:bg-slate-50'>
-          <svg
-            className='w-5 h-5'
-            fill='none'
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z'
-            />
+          <svg xmlns='http://www.w3.org/2000/svg' width='24' height='21' fill='none' viewBox='0 0 24 21'>
+            <path stroke='#000' strokeLinejoin='round' d='M23 10.5L12.917 1v5.429C3.267 6.429 1 13.258 1 20c2.785-3.52 5.248-5.429 11.917-5.429V20L23 10.5z' />
           </svg>
           Share
         </button>
