@@ -19,6 +19,7 @@ export const signupController = asyncHandler(
 
     const csrfToken = generateCSRFToken();
     setCSRFCookie(res, csrfToken);
+    res.setHeader('x-csrf-token', csrfToken);
 
     const { refreshToken: _refreshToken, ...responseData } = result;
 
@@ -39,6 +40,7 @@ export const loginController = asyncHandler(
 
     const csrfToken = generateCSRFToken();
     setCSRFCookie(res, csrfToken);
+    res.setHeader('x-csrf-token', csrfToken);
 
     const { refreshToken: _refreshToken, ...responseData } = result;
 

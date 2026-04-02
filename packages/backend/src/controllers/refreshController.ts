@@ -5,6 +5,7 @@ import {
   setRefreshTokenCookie,
   clearRefreshTokenCookie,
 } from '../utils/cookies.js';
+import { generateCSRFToken, setCSRFCookie } from '../middlewares/csrf.js';
 import { env } from '../config/index.js';
 import { logger } from '../utils/logger.js';
 
@@ -41,6 +42,10 @@ export const refreshTokenController = asyncHandler(
       });
 
       setRefreshTokenCookie(res, result.refreshToken);
+
+      const csrfToken = generateCSRFToken();
+      setCSRFCookie(res, csrfToken);
+      res.setHeader('x-csrf-token', csrfToken);
 
       const { refreshToken: _newRefreshToken, ...responseData } = result;
 
