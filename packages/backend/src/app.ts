@@ -32,8 +32,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(rateLimitMiddleware);
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// Serve uploaded files with CORS headers
+app.use(
+  '/uploads',
+  (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    next();
+  },
+  express.static(path.join(process.cwd(), 'uploads'))
+);
 
 app.use('/api', routes);
 
