@@ -25,23 +25,26 @@ export function FeedHeader() {
           {/* Search Bar */}
           <div className='flex-1 hidden max-w-md mx-8 md:flex'>
             <div className='relative w-full'>
-              <svg
-                className='absolute w-5 h-5 -translate-y-1/2 left-3 top-1/2'
+              {/* <svg
+                className='absolute w-4 h-4 -translate-y-1/2 left-4 top-1/2 text-slate-400'
                 xmlns='http://www.w3.org/2000/svg'
-                width='17'
-                height='17'
                 fill='none'
-                viewBox='0 0 17 17'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
+                strokeWidth={2}
               >
-                <circle cx='7' cy='7' r='6' stroke='#666' />
-                <path stroke='#666' strokeLinecap='round' d='M16 16l-3-3' />
-              </svg>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+                />
+              </svg> */}
               <input
                 type='text'
-                placeholder='input search text'
+                placeholder='Search...'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className='w-full py-2 pl-10 pr-4 text-sm border rounded-lg border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                className='w-full py-2 pl-12 pr-4 text-sm transition-all duration-200 border rounded-lg border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-50'
               />
             </div>
           </div>
