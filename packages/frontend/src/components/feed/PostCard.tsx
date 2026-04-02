@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { apiClient } from '@/lib/apiClient'
 import { CommentsSection } from './CommentsSection'
 import { PostLikersModal } from './PostLikersModal'
+import { LikeButton } from './LikeButton'
 
 interface PostCardProps {
   post: Post
@@ -305,7 +306,10 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
 
       {/* Post Stats */}
       <div className='flex items-center justify-between px-6 py-3 border-t border-slate-200'>
-        <div className='flex items-center gap-2'>
+        <button
+          onClick={() => setShowLikers(true)}
+          className='flex items-center gap-2 transition-opacity cursor-pointer hover:opacity-80'
+        >
           <div className='flex -space-x-1'>
             <img
               src='/assets/images/react_img1.png'
@@ -324,7 +328,7 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
             />
           </div>
           <span className='text-sm text-slate-600'>{likeCount}</span>
-        </div>
+        </button>
         <div className='flex items-center gap-4 text-sm text-slate-600'>
           <span>{post.commentCount} Comment</span>
           <span>0 Share</span>
@@ -334,32 +338,14 @@ export function PostCard({ post, onUpdate }: PostCardProps) {
       {/* Post Actions */}
       <div className='flex items-center border-t border-slate-200'>
         {/* Like Button */}
-        <button
-          onClick={() => handleToggleLike(!isLiked)}
-          className={`flex items-center justify-center flex-1 gap-2 py-3 text-sm transition-all duration-200 like-button ${
-            isLiked
-              ? 'text-red-500 bg-red-50 liked'
-              : 'text-slate-600 hover:bg-slate-50 hover:text-red-500'
-          }`}
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='20'
-            height='20'
-            fill={isLiked ? 'currentColor' : 'none'}
-            viewBox='0 0 24 24'
-            stroke='currentColor'
-            strokeWidth={2}
-            className={`transition-transform duration-200 ${isLiked ? 'scale-110' : 'scale-100'}`}
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-            />
-          </svg>
-          {isLiked ? 'Liked' : 'Like'}
-        </button>
+        <div className='flex items-center justify-center flex-1'>
+          <LikeButton
+            isLiked={isLiked}
+            likeCount={likeCount}
+            onToggle={handleToggleLike}
+            onShowLikers={() => setShowLikers(true)}
+          />
+        </div>
 
         {/* Comment Button */}
         <button className='flex items-center justify-center flex-1 gap-2 py-3 text-sm transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-blue-500'>

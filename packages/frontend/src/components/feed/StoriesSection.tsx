@@ -159,7 +159,7 @@ export function StoriesSection() {
                   </div>
                 )}
               </div>
-              <p className='w-16 mt-1 text-xs truncate text-slate-600'>
+              <p className='w-16 mt-1 text-xs font-semibold text-white truncate drop-shadow-md'>
                 {story.isOwn ? 'Your Story' : story.name.split(' ')[0] + '...'}
               </p>
             </div>
