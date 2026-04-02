@@ -61,7 +61,7 @@ tmp/
 temp/
 
 # ai agent
-.agent/
+# .agent/
 .cursor/
 .kilo/
 .agents/

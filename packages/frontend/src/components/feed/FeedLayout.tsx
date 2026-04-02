@@ -21,13 +21,17 @@ export function FeedLayout({
       <div className='container px-4 py-6 mx-auto'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
           {/* Left Sidebar - Hidden on mobile */}
-          <aside className='hidden lg:block lg:col-span-3'>{leftSidebar}</aside>
+          <aside className='hidden lg:block lg:col-span-3 h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide'>
+            {leftSidebar}
+          </aside>
 
           {/* Main Content */}
-          <main className='col-span-1 lg:col-span-6'>{mainContent}</main>
+          <main className='col-span-1 lg:col-span-6 h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide'>
+            {mainContent}
+          </main>
 
           {/* Right Sidebar - Hidden on mobile and tablet */}
-          <aside className='hidden xl:block xl:col-span-3'>
+          <aside className='hidden xl:block xl:col-span-3 h-[calc(100vh-120px)] overflow-y-auto scrollbar-hide'>
             {rightSidebar}
           </aside>
         </div>
