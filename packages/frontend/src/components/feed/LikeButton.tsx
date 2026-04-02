@@ -29,10 +29,16 @@ export function LikeButton({
       <button
         onClick={handleClick}
         disabled={disabled || isLoading}
-        className='flex items-center gap-1 cursor-pointer transition-colors duration-200 motion-reduce:transition-none disabled:opacity-50'
+        className={`flex items-center gap-1 cursor-pointer transition-all duration-200 motion-reduce:transition-none disabled:opacity-50 like-button ${
+          isLiked ? 'liked' : ''
+        }`}
       >
         <svg
-          className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-slate-500'}`}
+          className={`w-5 h-5 transition-transform duration-200 ${
+            isLiked
+              ? 'text-red-500 fill-red-500 scale-110'
+              : 'text-slate-500 hover:scale-105'
+          }`}
           viewBox='0 0 24 24'
           fill={isLiked ? 'currentColor' : 'none'}
           stroke='currentColor'
@@ -48,7 +54,7 @@ export function LikeButton({
       {likeCount > 0 && (
         <button
           onClick={onShowLikers}
-          className='text-sm text-slate-500 hover:text-slate-700 cursor-pointer'
+          className='text-sm transition-all duration-200 cursor-pointer text-slate-500 hover:text-slate-700 hover:scale-105'
         >
           {likeCount}
         </button>

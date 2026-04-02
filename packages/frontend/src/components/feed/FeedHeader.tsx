@@ -8,7 +8,7 @@ export function FeedHeader() {
   const [searchQuery, setSearchQuery] = useState('')
 
   return (
-    <header className='sticky top-0 z-50 bg-white border-b border-slate-200'>
+    <header className='sticky top-0 z-50 transition-all duration-300 bg-white border-b border-slate-200 hover:shadow-sm'>
       <div className='container px-4 mx-auto'>
         <div className='flex items-center justify-between h-16'>
           {/* Logo */}
@@ -51,7 +51,7 @@ export function FeedHeader() {
             {/* Home Icon - Active */}
             <a
               href='/feed'
-              className='p-2 text-blue-600 rounded-lg hover:bg-blue-50'
+              className='p-2 text-blue-600 transition-all duration-200 rounded-lg hover:bg-blue-50 hover:scale-105'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -80,7 +80,7 @@ export function FeedHeader() {
             {/* Friends Icon */}
             <a
               href='/friends'
-              className='p-2 rounded-lg text-slate-600 hover:bg-slate-100'
+              className='p-2 transition-all duration-200 rounded-lg text-slate-600 hover:bg-slate-100 hover:scale-105'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -103,7 +103,7 @@ export function FeedHeader() {
             <div className='relative'>
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className='relative p-2 rounded-lg text-slate-600 hover:bg-slate-100'
+                className='relative p-2 transition-all duration-200 rounded-lg text-slate-600 hover:bg-slate-100 hover:scale-105'
               >
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -217,7 +217,7 @@ export function FeedHeader() {
             {/* Chat Icon */}
             <a
               href='/chat'
-              className='relative p-2 rounded-lg text-slate-600 hover:bg-slate-100'
+              className='relative p-2 transition-all duration-200 rounded-lg text-slate-600 hover:bg-slate-100 hover:scale-105'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -243,7 +243,7 @@ export function FeedHeader() {
             <div className='relative'>
               <button
                 onClick={() => setShowProfile(!showProfile)}
-                className='flex items-center gap-2 p-1 rounded-lg hover:bg-slate-100'
+                className='flex items-center gap-2 p-1 transition-all duration-200 rounded-lg hover:bg-slate-100 hover:scale-105'
               >
                 <img
                   src='/assets/images/profile.png'

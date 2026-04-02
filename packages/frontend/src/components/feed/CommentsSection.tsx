@@ -177,11 +177,11 @@ export function CommentsSection({
   }
 
   return (
-    <div className='pt-3 mt-3 border-t border-slate-100'>
+    <div className='pt-3 mt-3 transition-all duration-300 border-t border-slate-100'>
       {!isExpanded ? (
         <button
           onClick={() => setIsExpanded(true)}
-          className='text-sm text-blue-600 cursor-pointer hover:text-blue-700'
+          className='text-sm text-blue-600 transition-all duration-200 cursor-pointer hover:text-blue-700 hover:scale-105'
         >
           {initialCommentCount > 0
             ? `View ${initialCommentCount} comment${initialCommentCount !== 1 ? 's' : ''}`
@@ -195,7 +195,7 @@ export function CommentsSection({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder='Write a comment...'
-              className='flex-1 px-3 py-2 text-sm border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='flex-1 px-3 py-2 text-sm transition-all duration-200 border rounded-md border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-50'
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
@@ -206,7 +206,7 @@ export function CommentsSection({
             <button
               onClick={handleAddComment}
               disabled={isLoading || !newComment.trim()}
-              className='text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 disabled:opacity-50'
+              className='text-sm font-medium text-blue-600 transition-all duration-200 cursor-pointer hover:text-blue-700 disabled:opacity-50 hover:scale-105'
             >
               Post
             </button>
@@ -221,7 +221,7 @@ export function CommentsSection({
                     {comment.author.lastName[0]}
                   </div>
                   <div className='flex-1'>
-                    <div className='px-3 py-2 rounded-lg bg-slate-100'>
+                    <div className='px-3 py-2 transition-all duration-200 rounded-lg bg-slate-100 hover:bg-slate-200'>
                       <span className='text-sm font-medium text-slate-900'>
                         {comment.author.firstName} {comment.author.lastName}
                       </span>
@@ -237,7 +237,7 @@ export function CommentsSection({
                         onClick={() =>
                           setReplyTo(replyTo === comment.id ? null : comment.id)
                         }
-                        className='text-xs font-medium cursor-pointer text-slate-500 hover:text-slate-700'
+                        className='text-xs font-medium transition-all duration-200 cursor-pointer text-slate-500 hover:text-slate-700 hover:scale-105'
                       >
                         Reply
                       </button>
@@ -252,7 +252,7 @@ export function CommentsSection({
                       {user?.id === comment.userId && (
                         <button
                           onClick={() => handleDeleteComment(comment.id)}
-                          className='text-xs text-red-500 cursor-pointer hover:text-red-700'
+                          className='text-xs text-red-500 transition-all duration-200 cursor-pointer hover:text-red-700 hover:scale-105'
                         >
                           Delete
                         </button>
@@ -266,7 +266,7 @@ export function CommentsSection({
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
                           placeholder='Write a reply...'
-                          className='flex-1 text-sm border border-slate-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                          className='flex-1 text-sm transition-all duration-200 border border-slate-300 rounded-md px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-slate-50'
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                               e.preventDefault()
@@ -278,7 +278,7 @@ export function CommentsSection({
                         <button
                           onClick={() => handleReply(comment.id)}
                           disabled={isLoading || !replyContent.trim()}
-                          className='text-sm font-medium text-blue-600 cursor-pointer hover:text-blue-700 disabled:opacity-50'
+                          className='text-sm font-medium text-blue-600 transition-all duration-200 cursor-pointer hover:text-blue-700 disabled:opacity-50 hover:scale-105'
                         >
                           Reply
                         </button>
@@ -294,7 +294,7 @@ export function CommentsSection({
                               {reply.author.lastName[0]}
                             </div>
                             <div className='flex-1'>
-                              <div className='px-3 py-2 rounded-lg bg-slate-50'>
+                              <div className='px-3 py-2 transition-all duration-200 rounded-lg bg-slate-50 hover:bg-slate-100'>
                                 <span className='text-sm font-medium text-slate-900'>
                                   {reply.author.firstName}{' '}
                                   {reply.author.lastName}
@@ -322,7 +322,7 @@ export function CommentsSection({
                                     onClick={() =>
                                       handleDeleteReply(comment.id, reply.id)
                                     }
-                                    className='text-xs text-red-500 cursor-pointer hover:text-red-700'
+                                    className='text-xs text-red-500 transition-all duration-200 cursor-pointer hover:text-red-700 hover:scale-105'
                                   >
                                     Delete
                                   </button>
@@ -341,7 +341,7 @@ export function CommentsSection({
 
           <button
             onClick={() => setIsExpanded(false)}
-            className='text-sm cursor-pointer text-slate-400 hover:text-slate-600'
+            className='text-sm transition-all duration-200 cursor-pointer text-slate-400 hover:text-slate-600 hover:scale-105'
           >
             Hide comments
           </button>

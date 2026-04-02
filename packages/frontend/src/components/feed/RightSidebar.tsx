@@ -31,7 +31,7 @@ export function RightSidebar() {
   return (
     <div className='space-y-6'>
       {/* You Might Like */}
-      <div className='p-6 bg-white border rounded-lg border-slate-200'>
+      <div className='p-6 transition-all duration-300 bg-white border rounded-lg border-slate-200 hover:shadow-md'>
         <div className='flex items-center justify-between mb-6'>
           <h4 className='text-lg font-semibold text-slate-900'>
             You Might Like
@@ -46,7 +46,11 @@ export function RightSidebar() {
         <hr className='mb-6 border-slate-200' />
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
-            <img src='/assets/images/Avatar.png' alt='Radovan SkillArena' className='w-12 h-12 rounded-full object-cover' />
+            <img
+              src='/assets/images/Avatar.png'
+              alt='Radovan SkillArena'
+              className='object-cover w-12 h-12 rounded-full'
+            />
             <div>
               <h5 className='font-medium text-slate-900'>Radovan SkillArena</h5>
               <p className='text-sm text-slate-500'>Founder & CEO at Trophy</p>
@@ -54,17 +58,17 @@ export function RightSidebar() {
           </div>
         </div>
         <div className='flex gap-2 mt-4'>
-          <button className='flex-1 px-3 py-2 text-sm font-medium border rounded-lg text-slate-600 border-slate-300 hover:bg-slate-50'>
+          <button className='flex-1 px-3 py-2 text-sm font-medium transition-all duration-200 border rounded-lg text-slate-600 border-slate-300 hover:bg-slate-50 hover:scale-105'>
             Ignore
           </button>
-          <button className='flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700'>
+          <button className='flex-1 px-3 py-2 text-sm font-medium text-white transition-all duration-200 bg-blue-600 rounded-lg hover:bg-blue-700 hover:scale-105'>
             Follow
           </button>
         </div>
       </div>
 
       {/* Your Friends */}
-      <div className='p-6 bg-white border rounded-lg border-slate-200'>
+      <div className='p-6 transition-all duration-300 bg-white border rounded-lg border-slate-200 hover:shadow-md'>
         <div className='flex items-center justify-between mb-6'>
           <h4 className='text-lg font-semibold text-slate-900'>Your Friends</h4>
           <a href='/friends' className='text-sm text-blue-600 hover:underline'>
@@ -99,7 +103,7 @@ export function RightSidebar() {
                   <img
                     src={friend.image}
                     alt={friend.name}
-                    className='w-10 h-10 rounded-full object-cover'
+                    className='object-cover w-10 h-10 rounded-full'
                   />
                 </div>
                 <div>
@@ -108,8 +112,23 @@ export function RightSidebar() {
                 </div>
               </div>
               {friend.online ? (
-                <svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' viewBox='0 0 14 14'>
-                  <rect width='12' height='12' x='1' y='1' fill='#0ACF83' stroke='#fff' strokeWidth='2' rx='6' />
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='14'
+                  height='14'
+                  fill='none'
+                  viewBox='0 0 14 14'
+                >
+                  <rect
+                    width='12'
+                    height='12'
+                    x='1'
+                    y='1'
+                    fill='#0ACF83'
+                    stroke='#fff'
+                    strokeWidth='2'
+                    rx='6'
+                  />
                 </svg>
               ) : (
                 <span className='text-xs text-slate-500'>

@@ -73,7 +73,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
   }
 
   return (
-    <div className='p-6 mb-4 bg-white border rounded-lg border-slate-200'>
+    <div className='p-6 mb-4 transition-all duration-300 bg-white border rounded-lg border-slate-200 hover:shadow-md'>
       <div className='flex gap-4'>
         <div className='flex-shrink-0 w-10 h-10 overflow-hidden rounded-full'>
           <img
@@ -87,7 +87,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder='Write something ...'
-            className='mb-4 border-0 resize-none focus:ring-0 focus:border-0'
+            className='mb-4 transition-all duration-200 border-0 resize-none focus:ring-0 focus:border-0 focus:bg-slate-50'
             rows={3}
           />
           {imagePreview && (
@@ -137,7 +137,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
             />
             <label
               htmlFor='image-upload'
-              className='flex items-center gap-2 text-sm cursor-pointer text-slate-600 hover:text-blue-600'
+              className='flex items-center gap-2 text-sm transition-all duration-200 cursor-pointer text-slate-600 hover:text-blue-600 hover:scale-105'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -154,7 +154,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
               Photo
             </label>
           </div>
-          <button className='flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600'>
+          <button className='flex items-center gap-2 text-sm transition-all duration-200 text-slate-600 hover:text-blue-600 hover:scale-105'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='22'
@@ -169,7 +169,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
             </svg>
             Video
           </button>
-          <button className='flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600'>
+          <button className='flex items-center gap-2 text-sm transition-all duration-200 text-slate-600 hover:text-blue-600 hover:scale-105'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='22'
@@ -184,7 +184,7 @@ export function CreatePostForm({ onPostCreated }: CreatePostFormProps) {
             </svg>
             Event
           </button>
-          <button className='flex items-center gap-2 text-sm text-slate-600 hover:text-blue-600'>
+          <button className='flex items-center gap-2 text-sm transition-all duration-200 text-slate-600 hover:text-blue-600 hover:scale-105'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='18'

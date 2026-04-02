@@ -4,6 +4,7 @@ import { apiClient } from '@/lib/apiClient'
 import { Post } from '@/types/post'
 import { CreatePostForm } from '@/components/feed/CreatePostForm'
 import { PostCard } from '@/components/feed/PostCard'
+import { PostSkeleton } from '@/components/feed/PostSkeleton'
 import { FeedLayout } from '@/components/feed/FeedLayout'
 import { FeedHeader } from '@/components/feed/FeedHeader'
 import { LeftSidebar } from '@/components/feed/LeftSidebar'
@@ -11,6 +12,7 @@ import { RightSidebar } from '@/components/feed/RightSidebar'
 import { StoriesSection } from '@/components/feed/StoriesSection'
 import { MobileBottomNav } from '@/components/feed/MobileBottomNav'
 import { Button } from '@/components/ui/button'
+import '@/styles/feed-design.css'
 
 export default function FeedPage() {
   const { isLoading: authLoading } = useRequireAuth()
@@ -104,8 +106,10 @@ export default function FeedPage() {
       )}
 
       {isLoading ? (
-        <div className='flex justify-center py-12'>
-          <div className='w-8 h-8 border-b-2 border-blue-600 rounded-full animate-spin'></div>
+        <div className='space-y-4'>
+          <PostSkeleton />
+          <PostSkeleton />
+          <PostSkeleton />
         </div>
       ) : posts.length === 0 ? (
         <div className='py-12 text-center'>
