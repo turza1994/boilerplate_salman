@@ -4,6 +4,7 @@ import { loginSchema, LoginFormData } from '@/lib/validation'
 import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import '@/styles/auth.css'
 
 export function LoginForm() {
@@ -12,6 +13,7 @@ export function LoginForm() {
   const [searchParams] = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
 
   const message = searchParams.get('message')
   const showSuccessMessage = message === 'signup-success'
@@ -78,17 +80,17 @@ export function LoginForm() {
       </div>
 
       <div className='max-w-[1200px] mx-auto px-4'>
-        <div className='flex items-center flex-wrap'>
-          <div className='hidden lg:block lg:w-2/3'>
+        <div className='flex flex-wrap items-center gap-8 lg:gap-12'>
+          <div className='hidden lg:block lg:w-1/2'>
             <div className='text-center'>
               <img
                 src='/assets/images/login.png'
                 alt='Login'
-                className='auth-hero-img mx-auto'
+                className='mx-auto auth-hero-img'
               />
             </div>
           </div>
-          <div className='w-full lg:w-1/3'>
+          <div className='w-full lg:w-5/12'>
             <div className='auth-card'>
               <img
                 src='/assets/images/logo.svg'
@@ -118,9 +120,7 @@ export function LoginForm() {
               )}
 
               {submitError && (
-                <div className='auth-alert auth-alert-error'>
-                  {submitError}
-                </div>
+                <div className='auth-alert auth-alert-error'>{submitError}</div>
               )}
 
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -140,13 +140,25 @@ export function LoginForm() {
 
                 <div className='auth-field'>
                   <label htmlFor='login-password'>Password</label>
-                  <input
-                    {...register('password')}
-                    id='login-password'
-                    type='password'
-                    className='auth-input'
-                    autoComplete='current-password'
-                  />
+                  <div className='auth-password-wrap'>
+                    <input
+                      {...register('password')}
+                      id='login-password'
+                      type={showPassword ? 'text' : 'password'}
+                      className='auth-input'
+                      autoComplete='current-password'
+                    />
+                    <button
+                      type='button'
+                      className='auth-password-toggle'
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={
+                        showPassword ? 'Hide password' : 'Show password'
+                      }
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                   {errors.password && (
                     <p className='auth-error'>{errors.password.message}</p>
                   )}
@@ -162,7 +174,9 @@ export function LoginForm() {
                     />
                     Remember me
                   </label>
-                  <span className='auth-forgot'>Forgot password?</span>
+                  <Link to='/forgot-password' className='auth-forgot'>
+                    Forgot password?
+                  </Link>
                 </div>
 
                 <div className='auth-submit-wrap'>

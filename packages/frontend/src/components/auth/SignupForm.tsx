@@ -1,25 +1,40 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signupSchema, SignupFormData } from '@/lib/validation'
+import { z } from 'zod'
+import { signupSchema } from '@/lib/validation'
 import { apiClient } from '@/lib/apiClient'
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import '@/styles/auth.css'
+
+const signupFormSchema = signupSchema
+  .extend({
+    repeatPassword: z.string().min(1, 'Please repeat your password'),
+  })
+  .refine((data) => data.password === data.repeatPassword, {
+    message: 'Passwords do not match',
+    path: ['repeatPassword'],
+  })
+
+type SignupFormDataType = z.infer<typeof signupFormSchema>
 
 export function SignupForm() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<SignupFormDataType>({
+    resolver: zodResolver(signupFormSchema),
   })
 
-  const onSubmit = async (data: SignupFormData) => {
+  const onSubmit = async (data: SignupFormDataType) => {
     setIsLoading(true)
     setSubmitError(null)
 
@@ -78,17 +93,17 @@ export function SignupForm() {
       </div>
 
       <div className='max-w-[1200px] mx-auto px-4'>
-        <div className='flex items-center flex-wrap'>
-          <div className='hidden lg:block lg:w-2/3'>
+        <div className='flex flex-wrap items-center gap-8 lg:gap-12'>
+          <div className='hidden lg:block lg:w-1/2'>
             <div className='text-center'>
               <img
                 src='/assets/images/registration.png'
                 alt='Registration'
-                className='auth-hero-img mx-auto'
+                className='mx-auto auth-hero-img'
               />
             </div>
           </div>
-          <div className='w-full lg:w-1/3'>
+          <div className='w-full lg:w-5/12'>
             <div className='auth-card'>
               <img
                 src='/assets/images/logo.svg'
@@ -112,12 +127,40 @@ export function SignupForm() {
               </div>
 
               {submitError && (
-                <div className='auth-alert auth-alert-error'>
-                  {submitError}
-                </div>
+                <div className='auth-alert auth-alert-error'>{submitError}</div>
               )}
 
               <form onSubmit={handleSubmit(onSubmit)}>
+                <div className='auth-name-row'>
+                  <div className='auth-field'>
+                    <label htmlFor='signup-first-name'>First Name</label>
+                    <input
+                      {...register('firstName')}
+                      id='signup-first-name'
+                      type='text'
+                      className='auth-input'
+                      autoComplete='given-name'
+                    />
+                    {errors.firstName && (
+                      <p className='auth-error'>{errors.firstName.message}</p>
+                    )}
+                  </div>
+
+                  <div className='auth-field'>
+                    <label htmlFor='signup-last-name'>Last Name</label>
+                    <input
+                      {...register('lastName')}
+                      id='signup-last-name'
+                      type='text'
+                      className='auth-input'
+                      autoComplete='family-name'
+                    />
+                    {errors.lastName && (
+                      <p className='auth-error'>{errors.lastName.message}</p>
+                    )}
+                  </div>
+                </div>
+
                 <div className='auth-field'>
                   <label htmlFor='signup-email'>Email</label>
                   <input
@@ -134,13 +177,25 @@ export function SignupForm() {
 
                 <div className='auth-field'>
                   <label htmlFor='signup-password'>Password</label>
-                  <input
-                    {...register('password')}
-                    id='signup-password'
-                    type='password'
-                    className='auth-input'
-                    autoComplete='new-password'
-                  />
+                  <div className='auth-password-wrap'>
+                    <input
+                      {...register('password')}
+                      id='signup-password'
+                      type={showPassword ? 'text' : 'password'}
+                      className='auth-input'
+                      autoComplete='new-password'
+                    />
+                    <button
+                      type='button'
+                      className='auth-password-toggle'
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={
+                        showPassword ? 'Hide password' : 'Show password'
+                      }
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                   {errors.password && (
                     <p className='auth-error'>{errors.password.message}</p>
                   )}
@@ -150,12 +205,34 @@ export function SignupForm() {
                   <label htmlFor='signup-repeat-password'>
                     Repeat Password
                   </label>
-                  <input
-                    id='signup-repeat-password'
-                    type='password'
-                    className='auth-input'
-                    autoComplete='new-password'
-                  />
+                  <div className='auth-password-wrap'>
+                    <input
+                      {...register('repeatPassword')}
+                      id='signup-repeat-password'
+                      type={showRepeatPassword ? 'text' : 'password'}
+                      className='auth-input'
+                      autoComplete='new-password'
+                    />
+                    <button
+                      type='button'
+                      className='auth-password-toggle'
+                      onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                      aria-label={
+                        showRepeatPassword ? 'Hide password' : 'Show password'
+                      }
+                    >
+                      {showRepeatPassword ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </div>
+                  {errors.repeatPassword && (
+                    <p className='auth-error'>
+                      {errors.repeatPassword.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className='auth-row auth-form-check'>
@@ -182,8 +259,7 @@ export function SignupForm() {
               </form>
 
               <p className='auth-bottom-text'>
-                Already have an account?{' '}
-                <Link to='/login'>Login</Link>
+                Already have an account? <Link to='/login'>Login</Link>
               </p>
             </div>
           </div>
